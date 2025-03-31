@@ -13,8 +13,8 @@ class Program
         var buyOrders = service.GetBestExecution(OrderType.Buy, buyAmount);
         if (buyOrders.Output != null)
         {
-            var executionPlan = new ExecutionPlan(buyOrders.Output, buyAmount, "Buy");
-            System.Console.WriteLine(executionPlan);
+            var totalPrice = buyOrders.Output.Sum(x => x.Amount * x.Price);
+            System.Console.WriteLine($"Btc amount: {buyAmount}; Total price: {totalPrice}");
         }
         else
         {
