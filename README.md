@@ -14,18 +14,18 @@ BsdOrderBook is a .NET 8 Web API application designed for order book management.
 ```sh
 docker build -t bsdorderbook .
 ```
-2. Run the Docker Container
+### **2. Run the Docker Container
 ```
 docker run -it --rm -p 8080:8080 --name bsdorderbook bsdorderbook
 ```
 ## 🐳 Running with Docker Compose
 To simplify running the application, you can use Docker Compose:
 
-1. Start the Application
+### **1. Start the Application
 ```
 docker-compose up --build
 ```
-2. Stop the Application
+### **2. Stop the Application
 ```
 docker-compose down
 ```
