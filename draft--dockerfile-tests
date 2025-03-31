@@ -1,0 +1,54 @@
+# build copies all project files and restores NuGet packages
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+WORKDIR /source
+
+# Copy project file and restore as distinct layers
+COPY src/BsdOrderBook.Host/*.csproj BsdOrderBook.Host/
+COPY src/BsdOrderBook.Domain/*.csproj BsdOrderBook.Domain/
+COPY src/BsdOrderBook.Application/*.csproj BsdOrderBook.Application/
+COPY src/BsdOrderBook.Infrastructure/*.csproj BsdOrderBook.Infrastructure/
+RUN dotnet restore BsdOrderBook.Host/BsdOrderBook.Host.csproj
+
+# Copy source code and publish app
+COPY src/BsdOrderBook.Host/ BsdOrderBook.Host/
+COPY src/BsdOrderBook.Domain/ BsdOrderBook.Domain/
+COPY src/BsdOrderBook.Application/ BsdOrderBook.Application/
+COPY src/BsdOrderBook.Infrastructure/ BsdOrderBook.Infrastructure/
+
+# test-build builds the xUnit test project
+FROM build AS test-build
+
+# Copy test project files
+WORKDIR /source/tests
+COPY Tests/BsdOrderBook.Application.UnitTests/*.csproj BsdOrderBook.Application.UnitTests/
+COPY Tests/BsdOrderBook.Host.UnitTests/*.csproj BsdOrderBook.Host.UnitTests/
+
+# Restore dependencies for test projects
+RUN dotnet restore BsdOrderBook.Application.UnitTests/BsdOrderBook.Application.UnitTests.csproj
+RUN dotnet restore BsdOrderBook.Host.UnitTests/BsdOrderBook.Host.UnitTests.csproj
+
+# Copy test source code
+COPY Tests/BsdOrderBook.Application.UnitTests/ BsdOrderBook.Application.UnitTests/
+COPY Tests/BsdOrderBook.Host.UnitTests/ BsdOrderBook.Host.UnitTests/
+
+# Build test projects
+RUN dotnet build --no-restore BsdOrderBook.Application.UnitTests/BsdOrderBook.Application.UnitTests.csproj
+RUN dotnet build --no-restore BsdOrderBook.Host.UnitTests/BsdOrderBook.Host.UnitTests.csproj
+
+
+# test-entrypoint exposes tests as the default executable for the stage
+FROM test-build AS test
+ENTRYPOINT ["dotnet", "test", "--no-build", "--logger:trx"]
+
+
+# publish builds and publishes host
+FROM build AS publish
+WORKDIR /source/BsdOrderBook.Host
+RUN dotnet publish --no-restore -o /app
+
+# final is the final runtime stage for running the app
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final
+EXPOSE 8080
+WORKDIR /app
+COPY --from=publish /app .
+ENTRYPOINT ["dotnet", "BsdOrderBook.Host.dll"]
