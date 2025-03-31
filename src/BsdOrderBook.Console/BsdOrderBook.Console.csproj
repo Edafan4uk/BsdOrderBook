@@ -2,6 +2,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\BsdOrderBook.Infrastructure\BsdOrderBook.Infrastructure.csproj" />
+    <ProjectReference Include="..\BsdOrderBook.Application\BsdOrderBook.Application.csproj" />
   </ItemGroup>
 
   <PropertyGroup>

@@ -1,3 +1,5 @@
+using BsdOrderBook.Application.Dto;
+
 class ExecutionPlan
 {
     public double TotalPrice { get; }
