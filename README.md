@@ -44,16 +44,12 @@ dotnet run --project src/BsdOrderBook.Host
 ## Access the API
 Swagger UI: http://localhost:8080/swagger
 
-## 🚀 Running the Application with Docker
+## 🧪 Running Tests with .NET CLI
+To run all tests using the .NET CLI:
+```
+dotnet test
+```
 
-**1. Build the Docker Image**
-```sh
-docker build -t bsdorderbook .
-```
-**2. Run the Docker Container**
-```
-docker run -it --rm -p 8080:8080 --name bsdorderbook bsdorderbook
-```
 ## 🐳 Running with Docker Compose
 To simplify running the application, you can use Docker Compose:
 
@@ -65,8 +61,16 @@ docker-compose up --build
 ```
 docker-compose down
 ```
-## 🧪 Running Tests with .NET CLI
-To run all tests using the .NET CLI:
+
+## 🚀 Running the Application with Docker
+
+**1. Build the Docker Image**
+```sh
+docker build -t bsdorderbook .
 ```
-dotnet test
+**2. Run the Docker Container**
 ```
+docker run -it --rm -p 8080:8080 --name bsdorderbook bsdorderbook
+```
+
+
