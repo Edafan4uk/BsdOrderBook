@@ -46,8 +46,10 @@ public class OrdersController : ControllerBase
         {
             return UnprocessableEntity(string.Join(',', executionOutput.ErrorMessages));
         }
-
-        return Ok(new ExecutionPlan(executionOutput.Output, orderInput.BtcAmount, orderInput.OrderType));
+        
+        var orders = executionOutput.Output;
+        var totalPrice = orders.Sum(x => x.Amount * x.Price);
+        return Ok(new ExecutionPlan(orders, totalPrice, orderInput.BtcAmount, orderInput.OrderType));
     } 
 
 }

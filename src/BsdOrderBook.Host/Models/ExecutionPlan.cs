@@ -9,10 +9,10 @@ class ExecutionPlan
     public string Type { get; }
     public List<ExecutionOrder> ExecutionOrders { get; set; }
 
-    public ExecutionPlan(List<ExecutionOrder> executionOrders, double btcAmount, string type)
+    public ExecutionPlan(List<ExecutionOrder> executionOrders, double totalPrice, double btcAmount, string type)
     {
         ExecutionOrders = executionOrders;
-        TotalPrice = executionOrders.Sum(x => x.Price);
+        TotalPrice = totalPrice;
         BtcAmount = btcAmount;
         Type = type;
     }
