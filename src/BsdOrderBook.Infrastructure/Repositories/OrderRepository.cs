@@ -34,19 +34,16 @@ public class OrderRepository : IOrderRepository
 
     private void LoadOrderBooks(string filePath)
     {
-        // Using ConcurrentBag to allow safe concurrent modifications across multiple threads
         var orderBooks = new ConcurrentBag<OrderBook>();
 
-        // Using Parallel.ForEach to process each line in parallel for better performance on large files
         Parallel.ForEach(File.ReadLines(filePath), line =>
         {
             int jsonIndex = line.IndexOf("{");
             if (jsonIndex == -1) return;
+
             // Using Span<char> to avoid unnecessary string allocations
             var lineSpan = line.AsSpan();
             var orderBookId = lineSpan[..(jsonIndex - 1)].TrimEnd();
-
-            // Extracting JSON part directly as a Span to reduce allocations
             var jsonPart = lineSpan[jsonIndex..];
             var orderBook = JsonSerializer.Deserialize<OrderBook>(jsonPart);
             if (orderBook == null) return;
@@ -54,7 +51,6 @@ public class OrderRepository : IOrderRepository
             orderBooks.Add(orderBook);
         });
 
-        // Process and populate bid/ask collections after parallel processing
         PopulateCollection(OrderType.Buy, orderBooks.SelectMany(x => x.Bids));
         PopulateCollection(OrderType.Sell, orderBooks.SelectMany(x => x.Asks));
     }
