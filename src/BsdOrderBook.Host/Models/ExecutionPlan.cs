@@ -1,5 +1,7 @@
 using BsdOrderBook.Application.Dto;
 
+namespace BsdOrderBook.Host.Models;
+
 class ExecutionPlan
 {
     public double TotalPrice { get; }
@@ -14,7 +16,7 @@ class ExecutionPlan
         BtcAmount = btcAmount;
         Type = type;
     }
-        
+
     public override string ToString() =>
         $"BtcAmount: {BtcAmount}, Type: {Type}, TotalPrice: {TotalPrice} eur, OrderCount: {ExecutionOrders.Count}";
 }
