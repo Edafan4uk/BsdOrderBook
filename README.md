@@ -22,7 +22,7 @@ Swagger UI: http://localhost:8080/swagger
 ```sh
 docker build -t bsdorderbook .
 ```
-2. Run the Docker Container
+**2. Run the Docker Container
 ```
 docker run -it --rm -p 8080:8080 --name bsdorderbook bsdorderbook
 ```
