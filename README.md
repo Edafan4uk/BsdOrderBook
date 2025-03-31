@@ -65,7 +65,7 @@ docker-compose up --build
 ```
 docker-compose down
 ```
-🧪 Running Tests with .NET CLI
+## 🧪 Running Tests with .NET CLI
 To run all tests using the .NET CLI:
 ```
 dotnet test
