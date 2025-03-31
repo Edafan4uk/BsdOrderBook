@@ -51,5 +51,4 @@ public class OrdersController : ControllerBase
         var totalPrice = orders.Sum(x => x.Amount * x.Price);
         return Ok(new ExecutionPlan(orders, totalPrice, orderInput.BtcAmount, orderInput.OrderType));
     } 
-
 }

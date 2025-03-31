@@ -2,7 +2,7 @@ using BsdOrderBook.Application.Dto;
 
 namespace BsdOrderBook.Host.Models;
 
-class ExecutionPlan
+public class ExecutionPlan
 {
     public double TotalPrice { get; }
     public double BtcAmount { get; }
