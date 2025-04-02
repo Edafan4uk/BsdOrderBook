@@ -1,4 +1,5 @@
 using BsdOrderBook.Application.Services;
+using BsdOrderBook.Domain.Enums;
 using BsdOrderBook.Host.Models;
 using FluentValidation;
 using FluentValidation.Results;
@@ -48,7 +49,7 @@ public class OrdersController : ControllerBase
         }
         
         var orders = executionOutput.Output;
-        var totalPrice = orders.Sum(x => x.Amount * x.Price);
+        var totalPrice = orderInput.OrderType == OrderType.Buy ? orders.Sum(x => x.Amount * x.Price) : orders.Sum(x => x.Price);
         return Ok(new ExecutionPlan(orders, totalPrice, orderInput.BtcAmount, orderInput.OrderType));
     } 
 }
